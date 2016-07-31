@@ -12,6 +12,8 @@ public class PlayerController : Controller
 	public float jumpHeight = 2.0f;
 	private bool grounded = false;
 
+	private bool mouseDown = false;
+
 	Rigidbody rig;
 	Camera playerCam;
 
@@ -29,16 +31,13 @@ public class PlayerController : Controller
 	{
 		if (Input.GetMouseButtonDown(1))
 		{
-			RaycastHit[] hits = Physics.RaycastAll(playerCam.transform.position, playerCam.transform.forward, 10f);
-
-
-			Block target;
-			if (hits.Length > 0)
+			RaycastHit hitInfo;
+			if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, 10f))
 			{
-				if (target = hits[0].transform.GetComponent<Block>())
+				Block target;
+				if (target = hitInfo.transform.GetComponent<Block>())
 				{
-					print(hits[0].normal);
-					PlaceBlock(hits[0].normal, target);
+					PlaceBlock(hitInfo.normal, target);
 				}
 			}
 
@@ -47,14 +46,15 @@ public class PlayerController : Controller
 
 	void PlaceBlock(Vector3 point, Block target)
 	{
-		//print(target.GetAdjacentBlockPosition(point));
 		Block.Spawn(point + target.transform.position);
+	}
+	void LateUpdate()
+	{
+		HandleActionClick();
 	}
 
 	void FixedUpdate()
 	{
-		HandleActionClick();
-
 		if (grounded)
 		{
 			// Calculate how fast we should be moving

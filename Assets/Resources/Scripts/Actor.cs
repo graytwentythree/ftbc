@@ -23,25 +23,25 @@ public class Actor : MonoBehaviour
 
 	protected virtual void Awake()
 	{
-		MODULE_PATH = Application.persistentDataPath + "/modules";
+		//MODULE_PATH = Application.persistentDataPath + "/modules";
 
-		engine = new ScriptEngine();
+		//engine = new ScriptEngine();
 
-		engine.EnableExposedClrTypes = true;
+		//engine.EnableExposedClrTypes = true;
 
-		engine.SetGlobalFunction("getPos", new Func<JSVectorInstance>(jsGetPos));
-		engine.SetGlobalFunction("setPos", new Action<double, double, double>(jsSetPos));
-		engine.SetGlobalFunction("printSomething", new Action<string>(jsPrintSomething));
+		//engine.SetGlobalFunction("getPos", new Func<JSVectorInstance>(jsGetPos));
+		//engine.SetGlobalFunction("setPos", new Action<double, double, double>(jsSetPos));
+		//engine.SetGlobalFunction("printSomething", new Action<string>(jsPrintSomething));
 
-		codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
+		//codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
 
-		engine.Execute(codeString);
+		//engine.Execute(codeString);
 	}
 
 	protected virtual void Update()
 	{
 		// Every frame, the actor's tick function is called.
-		engine.CallGlobalFunction("tick");
+		//engine.CallGlobalFunction("tick");
 
 		// extract tick function
 		//engine.Execute(codeString);

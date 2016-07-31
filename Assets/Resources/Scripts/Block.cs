@@ -9,8 +9,6 @@ public class Block : Actor {
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = position;
 
-		cube.AddComponent<BoxCollider>();
-
 		return cube.AddComponent<Block>();
 	}
 
