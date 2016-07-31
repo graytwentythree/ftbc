@@ -10,7 +10,7 @@ using System.IO;
 [RequireComponent(typeof(Stats))]
 public class Actor : MonoBehaviour
 {
-	public const string JAVASCRIPT_PATH = "Assets/Resources/JavaScripts/";
+	public static string MODULE_PATH;
 
 	ScriptEngine engine;
 	//public string scriptPath;
@@ -23,6 +23,8 @@ public class Actor : MonoBehaviour
 
 	protected virtual void Awake()
 	{
+		MODULE_PATH = Application.persistentDataPath + "/modules";
+
 		engine = new ScriptEngine();
 
 		engine.EnableExposedClrTypes = true;
@@ -31,8 +33,7 @@ public class Actor : MonoBehaviour
 		engine.SetGlobalFunction("setPos", new Action<double, double, double>(jsSetPos));
 		engine.SetGlobalFunction("printSomething", new Action<string>(jsPrintSomething));
 
-		// Every time an actor is made, his main script is run
-		codeString = File.ReadAllText(JAVASCRIPT_PATH + "actor.njs");
+		codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
 
 		engine.Execute(codeString);
 	}
@@ -66,3 +67,8 @@ public class Actor : MonoBehaviour
 	#endregion
 
 }
+
+public struct ActorData
+{
+}
+
