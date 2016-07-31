@@ -11,5 +11,5 @@ pos.z += Input.GetAxis("Mouse Y") * 0.3;
 if (Math.abs(pos.x) > 15 || Math.abs(pos.z) > 15)
 { pos.Reset(); }
 
-SetPosVec(pos);
+SetPos(pos.x, pos.y, pos.z);
 

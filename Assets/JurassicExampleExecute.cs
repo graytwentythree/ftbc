@@ -81,7 +81,6 @@ public class JurassicExampleExecute : MonoBehaviour
 		transform.position = new Vector3((float)x, (float)y, (float)z);
 	}
 	
-	
 	// Implementation of the JS GetText and SetText functions.
     public string jsGetText() { return floatingText; }
     public void jsSetText(string text) { floatingText = text; }	

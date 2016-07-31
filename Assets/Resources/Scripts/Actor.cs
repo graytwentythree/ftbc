@@ -5,12 +5,16 @@ using UnityEngine;
 using Jurassic;
 using Jurassic.Library;
 using JSUtil;
+using System.IO;
 
 [RequireComponent(typeof(Stats))]
 public class Actor : MonoBehaviour
 {
+	public const string JAVASCRIPT_PATH = "Assets/Resources/JavaScripts/";
+
 	ScriptEngine engine;
-	public static string codeString = "PrintSomething(GetPos().x + ', ' + GetPos().y + ', ' + GetPos().z);";
+	//public string scriptPath;
+	public string codeString = "PrintSomething(GetPos().x + ', ' + GetPos().y + ', ' + GetPos().z);";
 
 	public T GetOrAddComponent<T>() where T : Component
 	{
@@ -23,12 +27,22 @@ public class Actor : MonoBehaviour
 
 		engine.EnableExposedClrTypes = true;
 
-		engine.SetGlobalFunction("GetPos", new Func<JSVectorInstance>(jsGetPos));
-		engine.SetGlobalFunction("PrintSomething", new Action<string>(jsPrintSomething));
+		engine.SetGlobalFunction("getPos", new Func<JSVectorInstance>(jsGetPos));
+		engine.SetGlobalFunction("setPos", new Action<double, double, double>(jsSetPos));
+		engine.SetGlobalFunction("printSomething", new Action<string>(jsPrintSomething));
+
+		// Every time an actor is made, his main script is run
+		codeString = File.ReadAllText(JAVASCRIPT_PATH + "actor.njs");
+
+		engine.Execute(codeString);
 	}
 
-	void Update()
+	protected virtual void Update()
 	{
+		// Every frame, the actor's tick function is called.
+		engine.CallGlobalFunction("tick");
+
+		// extract tick function
 		//engine.Execute(codeString);
 	}
 
@@ -42,6 +56,11 @@ public class Actor : MonoBehaviour
 			(double)transform.position.x,
 			(double)transform.position.y,
 			(double)transform.position.z);
+	}
+
+	public void jsSetPos(double x, double y, double z)
+	{
+		transform.position = new Vector3((float)x, (float)y, (float)z);
 	}
 
 	#endregion
