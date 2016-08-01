@@ -4,6 +4,7 @@ using Jurassic;
 using System;
 using JSUtil;
 using System.IO;
+using Jurassic.Library;
 
 public class JSMaster : MonoBehaviour {
 	public static ScriptEngine engine;
@@ -36,7 +37,7 @@ public class JSMaster : MonoBehaviour {
 
 	private void SetJavaScriptFunctions()
 	{
-		engine.SetGlobalFunction("printSomething", new Action<string>(jsPrintSomething));
+		engine.SetGlobalFunction("print", new Action<string>(jsPrint));
 	}
 
 	public static void SetGlobalFunction(string str, Delegate fn)
@@ -49,9 +50,21 @@ public class JSMaster : MonoBehaviour {
 		engine.Execute(File.ReadAllText(path));
 	}
 
+	public static void SetInstanceFunction(string str, Delegate func, ObjectInstance jsObject) 
+	{
+		engine.SetGlobalFunction(str, func);
+
+		var myFunc = (FunctionInstance)engine.Global[str];
+
+		jsObject.SetPropertyValue(str, myFunc, false);
+
+		// Optional clean up
+		engine.Global.Delete(str, false);
+	}
+
 	#region JavaScript API
 
-	public void jsPrintSomething(string str) { print(str); }
+	public void jsPrint(string str) { print(str); }
 
 	#endregion
 }

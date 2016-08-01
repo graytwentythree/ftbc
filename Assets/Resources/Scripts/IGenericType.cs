@@ -1,0 +1,3 @@
+﻿interface IGenericType<T>
+{
+}
