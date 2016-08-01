@@ -12,20 +12,26 @@ public class JSMaster : MonoBehaviour {
 	public static string codeString;
 
 	// Use this for initialization
-	void Awake () {
+	void Awake ()
+	{
 		MODULE_PATH = Application.persistentDataPath + "/modules";
 
-		engine = new ScriptEngine();
+		InitializeJSEngine();
 
-		SetJavaScriptFunctions();
+		//codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
+
+		//engine.Execute(codeString);
+
+		ModuleLoader.LoadModules(MODULE_PATH);
+	}
+
+	void InitializeJSEngine()
+	{
+		engine = new ScriptEngine();
 
 		engine.EnableExposedClrTypes = true;
 
-		codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
-
-		engine.Execute(codeString);
-
-		ModuleLoader.LoadModules(MODULE_PATH);
+		SetJavaScriptFunctions();
 	}
 
 	private void SetJavaScriptFunctions()
