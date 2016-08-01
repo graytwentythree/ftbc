@@ -2,7 +2,6 @@
 using System.Collections;
 
 [RequireComponent(typeof(Collider))]
-
 public class PlayerController : Controller
 {
 	public float speed = 10.0f;
@@ -14,7 +13,6 @@ public class PlayerController : Controller
 
 	private bool mouseDown = false;
 
-	Rigidbody rig;
 	Camera playerCam;
 
 	void Awake()
@@ -40,7 +38,19 @@ public class PlayerController : Controller
 					PlaceBlock(hitInfo.normal, target);
 				}
 			}
+		}
 
+		if (Input.GetMouseButtonDown(0))
+		{
+			RaycastHit hitInfo;
+			if (Physics.Raycast(playerCam.transform.position, playerCam.transform.forward, out hitInfo, 10f))
+			{
+				Block target;
+				if (target = hitInfo.transform.GetComponent<Block>())
+				{
+					Destroy(target.gameObject);
+				}
+			}
 		}
 	}
 

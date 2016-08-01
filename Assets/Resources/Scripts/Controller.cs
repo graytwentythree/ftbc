@@ -4,8 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class Controller : MonoBehaviour {
 
-	Actor actor;
-	Rigidbody rig;
+	protected Actor actor;
+	protected Rigidbody rig;
 
 	// Use this for initialization
 	void Awake () {

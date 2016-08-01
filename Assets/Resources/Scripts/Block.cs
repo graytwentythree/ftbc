@@ -9,6 +9,10 @@ public class Block : Actor {
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = position;
 
+		Block actor = cube.AddComponent<Block>();
+
+		actor.id = lastId++;
+
 		return cube.AddComponent<Block>();
 	}
 
