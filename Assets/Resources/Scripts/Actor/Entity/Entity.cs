@@ -3,7 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 
+/// <summary>
+/// The Entity Component is attached to any intelligent actor.
+/// This would include enemy monsters, players, and others.
+/// 
+/// Every entity requires a controller which determines what it does
+/// and why. For example, the player entity's controller governs
+/// player movement and controls based on user input. 
+/// </summary>
+
 [RequireComponent(typeof(Controller))]
+[RequireComponent(typeof(Stats))]
 public class Entity : Actor, IActorWithInventory {
 	Controller controller;
 
