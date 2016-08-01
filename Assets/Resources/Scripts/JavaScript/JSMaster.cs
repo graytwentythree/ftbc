@@ -5,6 +5,7 @@ using System;
 using JSUtil;
 using System.IO;
 using Jurassic.Library;
+using System.Collections.Generic;
 
 public class JSMaster : MonoBehaviour {
 	public static ScriptEngine engine;
@@ -12,16 +13,14 @@ public class JSMaster : MonoBehaviour {
 
 	public static string codeString;
 
+	public static List<LogicalBlockData> logicalBlockStore = new List<LogicalBlockData>();
+
 	// Use this for initialization
 	void Awake ()
 	{
 		MODULE_PATH = Application.persistentDataPath + "/modules";
 
 		InitializeJSEngine();
-
-		//codeString = File.ReadAllText(MODULE_PATH + "/core/entities/player/main.js");
-
-		//engine.Execute(codeString);
 
 		ModuleLoader.LoadModules(MODULE_PATH);
 	}

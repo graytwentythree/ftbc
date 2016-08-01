@@ -1,4 +1,7 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.Linq;
+using Jurassic.Library;
 
 /// <summary>
 /// The ModuleLoader class contains static functions to load 
@@ -10,6 +13,7 @@
 public class ModuleLoader
 {
 	public const string MAIN_SCRIPT_NAME = "/main.js";
+	public const string MAIN_OBJECT_NAME = "mainObject";
 
 	public static void LoadModules(string path)
 	{
@@ -34,7 +38,27 @@ public class ModuleLoader
 		foreach (string dir in Directory.GetDirectories(logicalBlocksDir))
 		{
 			LoadActor(dir + MAIN_SCRIPT_NAME);
+
+			StoreLogicalBlockData(dir);
 		}
+	}
+
+	private static void StoreLogicalBlockData(string path)
+	{
+		//var mainObject = JSMaster.engine.GetGlobalValue<ObjectInstance>("mainObject");
+
+		// Store data of block including the id and path to js file
+		// id is used to grab the correct block from the LogicalBlock component
+		// path is run in the Logical Block component whenever a block is spawned.
+		// That was, the main object is reset and used again to store an instance object
+		// representing the logic of a specific logical block.
+		string name = path.Split('/').Last();
+		var blockData = new LogicalBlockData(name, JSMaster.logicalBlockStore.Count, path + MAIN_SCRIPT_NAME);
+
+		UnityEngine.Debug.Log(blockData.name);
+		UnityEngine.Debug.Log(blockData.id);
+
+		JSMaster.logicalBlockStore.Add(blockData);
 	}
 
 	public static void LoadEntities(string path)
@@ -66,5 +90,4 @@ public class ModuleLoader
 	{
 		JSMaster.ExecuteFile(path);
 	}
-
 }

@@ -6,6 +6,6 @@ public interface IProgrammable
 	void Tick();
 
 	// Creates an object instance in javascript containing the a JS API.
-	void RefreshJSObject();
+	void RefreshJSObject(string path);
 }
 
