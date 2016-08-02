@@ -8,7 +8,7 @@ public class LogicalBlock : Block, IProgrammable
 {
 	public ObjectInstance jsObject;
 
-	public static LogicalBlock Spawn(LogicalBlockData data, Vector3 position)
+	public static LogicalBlock Spawn(ActorData data, Vector3 position)
 	{
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = position;
@@ -96,23 +96,4 @@ public class LogicalBlock : Block, IProgrammable
 	}
 }
 
-/// <summary>
-/// The LogicalBlockData struct represents the data of a certain logical block type.
-/// For example, if the user wanted to spawn a generator, the generator LogicalBlockData
-/// could be fetched from memory by ID, and then an instance of a generator
-/// may be spawned using the fetched data.
-/// </summary>
-public struct LogicalBlockData
-{
-	public LogicalBlockData(string name, int id, string path)
-	{
-		this.name = name;
-		this.id = id;
-		this.path = path;
-	}
-
-	public string name;
-	public int id;
-	public string path;
-}
 

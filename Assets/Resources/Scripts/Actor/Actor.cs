@@ -64,7 +64,23 @@ public class Actor : MonoBehaviour
 
 }
 
+/// <summary>
+/// The LogicalBlockData struct represents the data of a certain logical block type.
+/// For example, if the user wanted to spawn a generator, the generator LogicalBlockData
+/// could be fetched from memory by ID, and then an instance of a generator
+/// may be spawned using the fetched data.
+/// </summary>
 public struct ActorData
 {
+	public ActorData(string name, int id, string path)
+	{
+		this.name = name;
+		this.id = id;
+		this.path = path;
+	}
+
+	public string name;
+	public int id;
+	public string path;
 }
 

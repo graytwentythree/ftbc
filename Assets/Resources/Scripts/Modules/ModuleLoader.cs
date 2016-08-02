@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Jurassic.Library;
+using UnityEngine;
 
 /// <summary>
 /// The ModuleLoader class contains static functions to load 
@@ -24,68 +25,46 @@ public class ModuleLoader
 		}
 	}
 
-	public static void LoadModule(string path)
+	// Loads a module at a given path
+	private static void LoadModule(string path)
 	{
-		LoadBlocks(path);
-		LoadLogicalBlocks(path);
-		LoadEntities(path);
-	}
-
-	public static void LoadLogicalBlocks(string path)
-	{
-		string logicalBlocksDir = path + "/logical-blocks";
-
-		foreach (string dir in Directory.GetDirectories(logicalBlocksDir))
+		// All actor type directories in a module (entities, blocks...)
+		foreach (string dir in Directory.GetDirectories(path))
 		{
-			LoadActor(dir + MAIN_SCRIPT_NAME);
-
-			StoreLogicalBlockData(dir);
+			LoadActors(dir);
 		}
 	}
 
-	private static void StoreLogicalBlockData(string path)
+	// Loads all the actors from a type of actor's directory.
+	// i.e. Load all blocks from the block directory
+	private static void LoadActors(string path)
 	{
-		//var mainObject = JSMaster.engine.GetGlobalValue<ObjectInstance>("mainObject");
-
-		// Store data of block including the id and path to js file
-		// id is used to grab the correct block from the LogicalBlock component
-		// path is run in the Logical Block component whenever a block is spawned.
-		// That was, the main object is reset and used again to store an instance object
-		// representing the logic of a specific logical block.
-		string name = path.Split('/').Last();
-
-		var blockData = new LogicalBlockData(name, JSMaster.logicalBlockStore.Count, path + MAIN_SCRIPT_NAME);
-
-		JSMaster.logicalBlockStore.Add(blockData);
-	}
-
-	public static void LoadEntities(string path)
-	{
-		string entitiesDir = path + "/entities";
-
-		foreach (string dir in Directory.GetDirectories(entitiesDir))
+		// All actor directories within an actor type directory
+		foreach (string dir in Directory.GetDirectories(path))
 		{
-			LoadActor(dir + MAIN_SCRIPT_NAME);
+			LoadActor(dir);
 		}
 	}
 
-	public static void LoadBlocks(string path)
+	// Loads an actor based on its directory
+	private static void LoadActor(string dir)
 	{
-		string blocksDir = path + "/blocks";
-
-		foreach (string dir in Directory.GetDirectories(blocksDir))
-		{
-			//LoadActor(dir + MAIN_SCRIPT_NAME);
-		}
+		RunScript(dir + MAIN_SCRIPT_NAME);
+		StoreActorData(dir);
 	}
 
-	public static void LoadActor(string path)
-	{
-		RunScript(path);
-	}
-
-	static void RunScript(string path)
+	private static void RunScript(string path)
 	{
 		JSMaster.ExecuteFile(path);
+	}
+
+	private static void StoreActorData(string path)
+	{
+		// Store data of block including the id and path to js file to run when spawning
+		string name = path.Split('/').Last();
+		
+		var blockData = new ActorData(name, JSMaster.actorStore.Count, path + MAIN_SCRIPT_NAME);
+		
+		JSMaster.actorStore.Add(blockData);
 	}
 }

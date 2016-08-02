@@ -8,10 +8,10 @@ public class GameController : MonoBehaviour
 	{
 		// These should all be the last logical block loaded
 		// from the module loader
-		LogicalBlock.Spawn(JSMaster.logicalBlockStore[0], Vector3.one * 4);
-		LogicalBlock.Spawn(JSMaster.logicalBlockStore[1], Vector3.one * -4);
-		LogicalBlock.Spawn(JSMaster.logicalBlockStore[0], Vector3.one * 4);
-		LogicalBlock.Spawn(JSMaster.logicalBlockStore[1], Vector3.one * -4);
+		//LogicalBlock.Spawn(JSMaster.actorStore[0], Vector3.one * 4);
+		//LogicalBlock.Spawn(JSMaster.actorStore[1], Vector3.one * -4);
+		//LogicalBlock.Spawn(JSMaster.actorStore[0], Vector3.one * 4);
+		//LogicalBlock.Spawn(JSMaster.actorStore[1], Vector3.one * -4);
 	}
 
 

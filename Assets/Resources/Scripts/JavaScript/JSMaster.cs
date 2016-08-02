@@ -13,7 +13,7 @@ public class JSMaster : MonoBehaviour {
 
 	public static string codeString;
 
-	public static List<LogicalBlockData> logicalBlockStore = new List<LogicalBlockData>();
+	public static List<ActorData> actorStore = new List<ActorData>();
 
 	// Use this for initialization
 	void Awake ()
