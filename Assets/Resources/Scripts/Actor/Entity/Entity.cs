@@ -15,9 +15,22 @@ using System;
 [RequireComponent(typeof(Controller))]
 [RequireComponent(typeof(Stats))]
 public class Entity : Actor, IActorWithInventory {
-	Controller controller;
 
-	IInventoryItem[] inventory = new IInventoryItem[27]; 
+	#region Member Variables
+
+	Controller controller;
+	IInventoryItem[] inventory = new IInventoryItem[27];
+
+	#endregion
+
+	#region Monobehaviour functions
+
+	protected override void Awake() {
+		controller = GetOrAddComponent<Controller>();
+		gameObject.layer = LayerMask.NameToLayer(LayerHelper.ENTITY_LAYER);
+	}
+
+	#endregion
 
 	public static Entity Spawn(Vector3 position)
 	{
@@ -30,6 +43,8 @@ public class Entity : Actor, IActorWithInventory {
 
 		return cube.AddComponent<Entity>();
 	}
+
+	#region Inventory Functions
 
 	public IInventoryItem GetItem(int index)
 	{
@@ -48,13 +63,5 @@ public class Entity : Actor, IActorWithInventory {
 	{
 	}
 
-	// Use this for initialization
-	protected override void Awake () {
-		controller = GetOrAddComponent<Controller>();
-	}
-
-	// Update is called once per frame
-	void Update () {
-		
-	}
+	#endregion
 }

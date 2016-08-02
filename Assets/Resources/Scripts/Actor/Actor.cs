@@ -33,15 +33,21 @@ public class Actor : MonoBehaviour
 
 	protected virtual void Awake()
 	{
+		gameObject.layer = LayerMask.NameToLayer(LayerHelper.ACTOR_LAYER);
 	}
 
 	protected virtual void Update()
 	{
 	}
 
+	protected virtual ObjectInstance GetJSObject()
+	{
+		return null;
+	}
+
 	#region JavaScript API Functions
 
-	 //Creates a JS Vector using transform position
+	//Creates a JS Vector using transform position
 	public JSVectorInstance jsGetPos() { 
 		return new JSVectorConstructor(JSMaster.engine).Construct(
 			(double)transform.position.x,

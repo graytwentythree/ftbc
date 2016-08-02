@@ -23,6 +23,19 @@ public class Controller : MonoBehaviour {
 		rig.velocity = GetMoveInput();
 	}
 
+	protected virtual void Interact(Interaction interactMode)
+	{
+		switch (interactMode)
+		{
+			case Interaction.ActivateBlock:
+				break;
+			case Interaction.DestroyBlock:
+				break;
+			case Interaction.PlaceBlock:
+				break;
+		}
+	}
+
 	// Update is called once per frame
 	void Update () {
 	

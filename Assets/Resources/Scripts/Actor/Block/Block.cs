@@ -1,8 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Jurassic.Library;
+using System;
 
 public class Block : Actor {
+
+	public Dictionary<string, Vector3> dirs = new Dictionary<string, Vector3>();
+
+	protected override void Awake()
+	{
+		gameObject.layer = LayerMask.NameToLayer(LayerHelper.BLOCK_LAYER);
+		AddDirectionsToDictionary();
+	}
 
 	public static Block Spawn(Vector3 position)
 	{
@@ -26,4 +36,43 @@ public class Block : Actor {
 
 		return new Vector3(newX, newY, newZ);
 	}
+	
+	public Block GetAdjacentBlock(Vector3 direction)
+	{
+		Block target = null;
+		
+		RaycastHit hitInfo;
+		if (Physics.Raycast(transform.position, direction,
+		                    out hitInfo, .5f, LayerHelper.LayerToLayerMask(gameObject.layer)))
+		{
+			target = hitInfo.transform.GetComponent<Block>();
+		}
+		
+		return target;
+	}
+
+	// Returns the js object instance of a js-serializeable block
+	public ObjectInstance GetAdjacentBlockObject(Vector3 direction)
+	{
+		Block b = GetAdjacentBlock(direction);
+
+		return b == null ? null : b.GetJSObject();
+	}
+
+	protected override ObjectInstance GetJSObject()
+	{
+		return null;
+	}
+
+	// Add all directional references to dirs dictionary by string
+	private void AddDirectionsToDictionary()
+	{
+		dirs.Add("forward", transform.forward);
+		dirs.Add("backward", -transform.forward);
+		dirs.Add("right", transform.right);
+		dirs.Add("left", -transform.right);
+		dirs.Add("down", -transform.up);
+		dirs.Add("up", transform.up);
+	}
+
 }

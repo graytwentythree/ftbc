@@ -6,7 +6,7 @@ using System;
 
 public class LogicalBlock : Block, IProgrammable
 {
-	ObjectInstance jsObject;
+	public ObjectInstance jsObject;
 
 	public static LogicalBlock Spawn(LogicalBlockData data, Vector3 position)
 	{
@@ -21,6 +21,8 @@ public class LogicalBlock : Block, IProgrammable
 
 		actor.RefreshJSObject(data.path);
 
+		actor.SetJSMemberFunctions();
+
 		actor.jsAwake();
 
 		return actor;
@@ -31,6 +33,11 @@ public class LogicalBlock : Block, IProgrammable
 		base.Update();
 
 		Tick();
+	}
+
+	protected override ObjectInstance GetJSObject()
+	{
+		return jsObject;
 	}
 
 	public void RefreshJSObject(string path)
@@ -48,6 +55,8 @@ public class LogicalBlock : Block, IProgrammable
 		jsObject = (ObjectInstance)JSMaster.engine.Global[gameObject.name + id];
 	}
 
+	#region JS API Wrappers
+
 	public void jsAwake()
 	{
 		jsObject.CallMemberFunction("awake");
@@ -61,6 +70,29 @@ public class LogicalBlock : Block, IProgrammable
 	public void Activate()
 	{
 		jsObject.CallMemberFunction("activate");
+	}
+
+	#endregion
+
+	#region JS API Functions
+
+	public ObjectInstance jsGetAdjacentBlockObject(string direction)
+	{
+		Vector3 dir = dirs[direction.ToLower()];
+
+		print(GetAdjacentBlockObject(dir));
+
+		return GetAdjacentBlockObject(dir);
+	}
+
+	#endregion
+
+	// Sets all JS API functions on the javascript object representing this LogicalBlock
+	private void SetJSMemberFunctions()
+	{
+		JSMaster.SetInstanceFunction("getAdjacentBlock",
+									 new Func<string, ObjectInstance>(jsGetAdjacentBlockObject),
+									 jsObject);
 	}
 }
 

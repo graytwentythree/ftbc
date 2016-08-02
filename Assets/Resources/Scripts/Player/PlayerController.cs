@@ -9,9 +9,8 @@ public class PlayerController : Controller
 	public float maxVelocityChange = 10.0f;
 	public bool canJump = true;
 	public float jumpHeight = 2.0f;
-	private bool grounded = false;
 
-	private bool mouseDown = false;
+	private bool grounded = false;
 
 	Camera playerCam;
 

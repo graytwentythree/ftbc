@@ -53,10 +53,8 @@ public class ModuleLoader
 		// That was, the main object is reset and used again to store an instance object
 		// representing the logic of a specific logical block.
 		string name = path.Split('/').Last();
-		var blockData = new LogicalBlockData(name, JSMaster.logicalBlockStore.Count, path + MAIN_SCRIPT_NAME);
 
-		UnityEngine.Debug.Log(blockData.name);
-		UnityEngine.Debug.Log(blockData.id);
+		var blockData = new LogicalBlockData(name, JSMaster.logicalBlockStore.Count, path + MAIN_SCRIPT_NAME);
 
 		JSMaster.logicalBlockStore.Add(blockData);
 	}
