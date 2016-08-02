@@ -64,7 +64,11 @@ public class ModuleLoader
 		string name = path.Split('/').Last();
 		
 		var blockData = new ActorData(name, JSMaster.actorStore.Count, path + MAIN_SCRIPT_NAME);
-		
-		JSMaster.actorStore.Add(blockData);
+
+		// Old list
+		//JSMaster.actorStore.Add(blockData);
+
+		// New dictionary. Gives id from list of keys, name as key.
+		JSMaster.actorStore.Add(name.ToLower(), blockData);
 	}
 }

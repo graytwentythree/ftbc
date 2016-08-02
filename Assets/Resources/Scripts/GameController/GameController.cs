@@ -6,12 +6,12 @@ public class GameController : MonoBehaviour
 	// Use this for initialization
 	void Start()
 	{
-		// These should all be the last logical block loaded
-		// from the module loader
-		//LogicalBlock.Spawn(JSMaster.actorStore[0], Vector3.one * 4);
-		//LogicalBlock.Spawn(JSMaster.actorStore[1], Vector3.one * -4);
-		//LogicalBlock.Spawn(JSMaster.actorStore[0], Vector3.one * 4);
-		//LogicalBlock.Spawn(JSMaster.actorStore[1], Vector3.one * -4);
+		// Assault and battery
+
+		Vector3 genPos = Vector3.one;
+		genPos.z += 1;
+		LogicalBlock.Spawn(JSMaster.actorStore["generator"], genPos);
+		LogicalBlock.Spawn(JSMaster.actorStore["battery"], Vector3.one);
 	}
 
 

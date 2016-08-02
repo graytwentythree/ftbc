@@ -13,7 +13,8 @@ public class JSMaster : MonoBehaviour {
 
 	public static string codeString;
 
-	public static List<ActorData> actorStore = new List<ActorData>();
+	//public static List<ActorData> actorStore = new List<ActorData>();
+	public static Dictionary<string, ActorData> actorStore = new Dictionary<string, ActorData>();
 
 	// Use this for initialization
 	void Awake ()
