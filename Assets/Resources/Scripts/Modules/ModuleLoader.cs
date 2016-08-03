@@ -39,18 +39,20 @@ public class ModuleLoader
 	// i.e. Load all blocks from the block directory
 	private static void LoadActors(string path)
 	{
+		string type = path.Split('/').Last().ToLower();
+
 		// All actor directories within an actor type directory
 		foreach (string dir in Directory.GetDirectories(path))
 		{
-			LoadActor(dir);
+			LoadActor(dir, type);
 		}
 	}
 
 	// Loads an actor based on its directory
-	private static void LoadActor(string dir)
+	private static void LoadActor(string dir, string type)
 	{
 		RunScript(dir + MAIN_SCRIPT_NAME);
-		StoreActorData(dir);
+		StoreActorData(dir, type);
 	}
 
 	private static void RunScript(string path)
@@ -58,17 +60,28 @@ public class ModuleLoader
 		JSMaster.ExecuteFile(path);
 	}
 
-	private static void StoreActorData(string path)
+	private static void StoreActorData(string path, string type)
 	{
 		// Store data of block including the id and path to js file to run when spawning
-		string name = path.Split('/').Last();
-		
-		var blockData = new ActorData(name, JSMaster.actorStore.Count, path + MAIN_SCRIPT_NAME);
+		string name = path.Split('/').Last().ToLower();
+
+		var blockData = GetActorData(type, name, JSMaster.actorStore.Count, path + MAIN_SCRIPT_NAME);
 
 		// Old list
 		//JSMaster.actorStore.Add(blockData);
 
 		// New dictionary. Gives id from list of keys, name as key.
 		JSMaster.actorStore.Add(name.ToLower(), blockData);
+	}
+
+	private static ActorData GetActorData(string type, string name, int id, string path)
+	{
+		switch (type)
+		{
+			case "blocks":
+				return new BlockData(name, JSMaster.actorStore.Count, path);
+			default:
+				return new ActorData(name, JSMaster.actorStore.Count, path);
+		}
 	}
 }

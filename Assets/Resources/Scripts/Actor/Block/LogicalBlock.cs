@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using Jurassic.Library;
 using System;
 
-public class LogicalBlock : Block, IProgrammable
+public class LogicalBlock : Block 
 {
-	public ObjectInstance jsObject;
-
 	public static LogicalBlock Spawn(ActorData data, Vector3 position)
 	{
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -28,72 +26,64 @@ public class LogicalBlock : Block, IProgrammable
 		return actor;
 	}
 
-	protected override void Update()
-	{
-		base.Update();
+	//protected override void Update()
+	//{
+	//	base.Update();
 
-		Tick();
-	}
+	//	//Tick();
+	//}
 
-	protected override ObjectInstance GetJSObject()
-	{
-		return jsObject;
-	}
+	//protected override ObjectInstance GetJSObject()
+	//{
+	//	return jsObject;
+	//}
 
-	public void RefreshJSObject(string path)
-	{
-		// if we execute the script that belongs to this type, we can grab the correct mainobject.
-		JSMaster.ExecuteFile(path);
+	//public void RefreshJSObject(string path)
+	//{
+	//	// if we execute the script that belongs to this type, we can grab the correct mainobject.
+	//	JSMaster.ExecuteFile(path);
 
-		// Get main object created by modder
-		var mainObject = JSMaster.engine.GetGlobalValue<ObjectInstance>("mainObject");
+	//	// Get main object created by modder
+	//	var mainObject = JSMaster.engine.GetGlobalValue<ObjectInstance>("mainObject");
 
-		// Set the name to be this thing's name + its id as a unique identifier
-		JSMaster.engine.SetGlobalValue(gameObject.name + id, mainObject);
+	//	// Set the name to be this thing's name + its id as a unique identifier
+	//	JSMaster.engine.SetGlobalValue(gameObject.name + id, mainObject);
 
-		// Store a reference to the unique identifier once
-		jsObject = (ObjectInstance)JSMaster.engine.Global[gameObject.name + id];
-	}
+	//	// Store a reference to the unique identifier once
+	//	jsObject = (ObjectInstance)JSMaster.engine.Global[gameObject.name + id];
+	//}
 
-	#region JS API Wrappers
+	//#region JS API Wrappers
 
-	public void jsAwake()
-	{
-		jsObject.CallMemberFunction("awake");
-	}
+	//public void jsAwake()
+	//{
+	//	jsObject.CallMemberFunction("awake");
+	//}
 
-	public void Tick()
-	{
-		jsObject.CallMemberFunction("tick");
-	}
+	//public void Tick()
+	//{
+	//	jsObject.CallMemberFunction("tick");
+	//}
 
-	public void Activate()
-	{
-		jsObject.CallMemberFunction("activate");
-	}
+	//public void Activate()
+	//{
+	//	jsObject.CallMemberFunction("activate");
+	//}
 
-	#endregion
+	//#endregion
 
-	#region JS API Functions
+	//#region JS API Functions
 
-	public ObjectInstance jsGetAdjacentBlockObject(string direction)
-	{
-		Vector3 dir = dirs[direction.ToLower()];
 
-		print(GetAdjacentBlockObject(dir));
 
-		return GetAdjacentBlockObject(dir);
-	}
-
-	#endregion
+	//#endregion
 
 	// Sets all JS API functions on the javascript object representing this LogicalBlock
-	private void SetJSMemberFunctions()
-	{
-		JSMaster.SetInstanceFunction("getAdjacentBlock",
-									 new Func<string, ObjectInstance>(jsGetAdjacentBlockObject),
-									 jsObject);
-	}
+
+	//void IProgrammable.RefreshJSObject(string path)
+	//{
+	//	throw new NotImplementedException();
+	//}
 }
 
 

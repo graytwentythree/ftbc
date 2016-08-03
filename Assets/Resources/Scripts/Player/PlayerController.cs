@@ -55,7 +55,7 @@ public class PlayerController : Controller
 
 	void PlaceBlock(Vector3 point, Block target)
 	{
-		Block.Spawn(point + target.transform.position);
+		Block.Spawn(null, point + target.transform.position);
 	}
 	void LateUpdate()
 	{

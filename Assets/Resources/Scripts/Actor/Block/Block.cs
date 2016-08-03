@@ -6,15 +6,13 @@ using System;
 
 public class Block : Actor {
 
-	public Dictionary<string, Vector3> dirs = new Dictionary<string, Vector3>();
-
 	protected override void Awake()
 	{
+		base.Awake();
 		gameObject.layer = LayerMask.NameToLayer(LayerHelper.BLOCK_LAYER);
-		AddDirectionsToDictionary();
 	}
 
-	public static Block Spawn(Vector3 position)
+	public static Block Spawn(BlockData data, Vector3 position)
 	{
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = position;
@@ -23,7 +21,11 @@ public class Block : Actor {
 
 		actor.id = lastId++;
 
-		return cube.AddComponent<Block>();
+		actor.name = data.name;
+
+		actor.SetupJSObject(data);
+
+		return actor;
 	}
 
 	public Vector3 GetAdjacentBlockPosition(Vector3 hitPos)
@@ -59,20 +61,18 @@ public class Block : Actor {
 		return b == null ? null : b.GetJSObject();
 	}
 
-	protected override ObjectInstance GetJSObject()
+	public ObjectInstance jsGetAdjacentBlockObject(string direction)
 	{
-		return null;
+		Vector3 dir = dirs[direction.ToLower()];
+
+		return GetAdjacentBlockObject(dir);
 	}
 
-	// Add all directional references to dirs dictionary by string
-	private void AddDirectionsToDictionary()
+	protected override void SetJSMemberFunctions()
 	{
-		dirs.Add("forward", transform.forward);
-		dirs.Add("backward", -transform.forward);
-		dirs.Add("right", transform.right);
-		dirs.Add("left", -transform.right);
-		dirs.Add("down", -transform.up);
-		dirs.Add("up", transform.up);
+		base.SetJSMemberFunctions();
+		JSMaster.SetInstanceFunction("getAdjacentBlock",
+									 new Func<string, ObjectInstance>(jsGetAdjacentBlockObject),
+									 jsObject);
 	}
-
 }

@@ -7,42 +7,83 @@ using Jurassic.Library;
 using JSUtil;
 using System.IO;
 using System.Reflection;
+using System.Collections.Generic;
 
 public class Actor : MonoBehaviour
 {
+	public ObjectInstance jsObject;
+
 	public static int lastId = 0;
 
 	protected int id;
 
-	public T GetOrAddComponent<T>() where T : Component
-	{
-		return GetComponent<T>() ? GetComponent<T>() : gameObject.AddComponent<T>();
-	}
+	private const float TICK_DELAY = 0.5f;
 
-	public static Actor Spawn(Vector3 position)
+	// Stores all possible directions for an actor to point at.
+	public Dictionary<string, Vector3> dirs = new Dictionary<string, Vector3>();
+
+	public static Actor Spawn(ActorData data, Vector3 position)
 	{
 		GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
 		cube.transform.position = position;
 
 		Actor actor = cube.AddComponent<Actor>();
 
+		actor.name = data.name;
+
 		actor.id = lastId++;
 
+		actor.SetupJSObject(data);
+
 		return actor;
+	}
+
+	public void SetupJSObject(ActorData data)
+	{
+		RefreshJSObject(data.path);
+
+		SetJSMemberFunctions();
+
+		jsAwake();
+
+		StartTicking();
 	}
 
 	protected virtual void Awake()
 	{
 		gameObject.layer = LayerMask.NameToLayer(LayerHelper.ACTOR_LAYER);
+		AddDirectionsToDictionary();
+	}
+
+	protected virtual void Start()
+	{ 
 	}
 
 	protected virtual void Update()
 	{
 	}
 
-	protected virtual ObjectInstance GetJSObject()
+	public void StartTicking()
 	{
-		return null;
+		if (jsObject.HasProperty("tick"))
+		{
+			StartCoroutine(RunTick());
+		}
+	}
+
+	// Runs the tick of every actor constantly.
+	// Function does not reach its end or a 'return' statement by any of possible execution paths
+	#pragma warning disable RECS0135
+	protected IEnumerator RunTick()
+	{
+		yield return new WaitForSeconds(UnityEngine.Random.value * TICK_DELAY);
+
+		while (true)
+		{
+			Tick();
+			float delay = TICK_DELAY / 2;
+			yield return new WaitForSeconds(delay);
+		}
 	}
 
 	#region JavaScript API Functions
@@ -62,6 +103,73 @@ public class Actor : MonoBehaviour
 
 	#endregion
 
+	#region JS API Wrappers
+
+	public void jsAwake()
+	{
+		jsObject.CallMemberFunction("awake");
+	}
+
+	public void Tick()
+	{
+		jsObject.CallMemberFunction("tick");
+	}
+
+	public void Activate()
+	{
+		jsObject.CallMemberFunction("activate");
+	}
+
+	#endregion
+
+	#region JS Helpers
+
+	protected virtual ObjectInstance GetJSObject()
+	{
+		return jsObject;
+	}
+
+	protected void RefreshJSObject(string path)
+	{
+		// if we execute the script that belongs to this type, we can grab the correct mainobject.
+		JSMaster.ExecuteFile(path);
+
+		// Get main object created by modder
+		var mainObject = JSMaster.engine.GetGlobalValue<ObjectInstance>("mainObject");
+
+		// Set the name to be this thing's name + its id as a unique identifier
+		JSMaster.engine.SetGlobalValue(gameObject.name + id, mainObject);
+
+		// Store a reference to the unique identifier once
+		jsObject = (ObjectInstance)JSMaster.engine.Global[gameObject.name + id];
+	}
+
+
+	protected virtual void SetJSMemberFunctions()
+	{
+	}
+
+	#endregion
+
+
+	#region Various Helper Methods
+
+	private void AddDirectionsToDictionary()
+	{
+		dirs.Add("forward", transform.forward);
+		dirs.Add("backward", -transform.forward);
+		dirs.Add("right", transform.right);
+		dirs.Add("left", -transform.right);
+		dirs.Add("down", -transform.up);
+		dirs.Add("up", transform.up);
+	}
+
+	public T GetOrAddComponent<T>() where T : Component
+	{
+		return GetComponent<T>() ? GetComponent<T>() : gameObject.AddComponent<T>();
+	}
+
+	#endregion
 }
 
 /// <summary>
@@ -70,7 +178,7 @@ public class Actor : MonoBehaviour
 /// could be fetched from memory by ID, and then an instance of a generator
 /// may be spawned using the fetched data.
 /// </summary>
-public struct ActorData
+public class ActorData
 {
 	public ActorData(string name, int id, string path)
 	{
@@ -79,8 +187,25 @@ public struct ActorData
 		this.path = path;
 	}
 
+	public virtual Actor Spawn(Vector3 position)
+	{
+		return Actor.Spawn(this, position);
+	}
+
 	public string name;
 	public int id;
 	public string path;
 }
 
+public class BlockData : ActorData
+{
+	public BlockData(string name, int id, string path) : base(name, id, path)
+	{
+	}
+	
+	public override Actor Spawn(Vector3 position)
+	{
+		return Block.Spawn(this, position);
+	}
+}
+		
