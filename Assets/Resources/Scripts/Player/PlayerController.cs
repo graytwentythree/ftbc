@@ -55,8 +55,9 @@ public class PlayerController : Controller
 
 	void PlaceBlock(Vector3 point, Block target)
 	{
-		Block.Spawn(null, point + target.transform.position);
+		Actor.Spawn("dirt", point + target.transform.position);
 	}
+
 	void LateUpdate()
 	{
 		HandleActionClick();

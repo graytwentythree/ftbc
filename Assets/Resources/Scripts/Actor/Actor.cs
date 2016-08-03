@@ -19,8 +19,21 @@ public class Actor : MonoBehaviour
 
 	private const float TICK_DELAY = 0.5f;
 
+	#region JS Function Name Constants
+
+	private const string JS_AWAKE_NAME = "awake";
+	private const string JS_TICK_NAME = "tick";
+	private const string JS_ACTIVATE_NAME = "activate";
+
+	#endregion
+
 	// Stores all possible directions for an actor to point at.
 	public Dictionary<string, Vector3> dirs = new Dictionary<string, Vector3>();
+
+	public static Actor Spawn(string actorName, Vector3 position)
+	{
+		return JSMaster.actorStore[actorName].Spawn(position);
+	}
 
 	public static Actor Spawn(ActorData data, Vector3 position)
 	{
@@ -65,7 +78,7 @@ public class Actor : MonoBehaviour
 
 	public void StartTicking()
 	{
-		if (jsObject.HasProperty("tick"))
+		if (jsObject.HasProperty(JS_TICK_NAME))
 		{
 			StartCoroutine(RunTick());
 		}
@@ -107,17 +120,21 @@ public class Actor : MonoBehaviour
 
 	public void jsAwake()
 	{
-		jsObject.CallMemberFunction("awake");
+		if (!jsObject.HasProperty(JS_AWAKE_NAME)) return;
+
+		jsObject.CallMemberFunction(JS_AWAKE_NAME);
 	}
 
 	public void Tick()
 	{
-		jsObject.CallMemberFunction("tick");
+		jsObject.CallMemberFunction(JS_TICK_NAME);
 	}
 
 	public void Activate()
 	{
-		jsObject.CallMemberFunction("activate");
+			if (!jsObject.HasProperty(JS_ACTIVATE_NAME)) return;
+
+		jsObject.CallMemberFunction(JS_ACTIVATE_NAME);
 	}
 
 	#endregion
