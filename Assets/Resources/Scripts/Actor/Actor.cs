@@ -46,11 +46,18 @@ public class Actor : MonoBehaviour
 
 		actor.id = lastId++;
 
-		SetTextureFromFile(data, actor);
-
 		actor.SetupJSObject(data);
 
+		SetMesh(actor, ModuleLoader.cubeMesh);
+
+		SetTextureFromFile(data, actor);
+
 		return actor;
+	}
+
+	protected static void SetMesh(Actor actor, Mesh mesh)
+	{
+		actor.GetComponent<MeshFilter>().mesh = mesh;
 	}
 
 	protected static void SetTextureFromFile(ActorData data, Actor actor)

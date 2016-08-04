@@ -26,6 +26,8 @@ public class Block : Actor {
 
 		actor.SetupJSObject(data);
 
+		SetMesh(actor, ModuleLoader.cubeMesh);
+
 		SetTextureFromFile(data, actor);
 
 		return actor;
