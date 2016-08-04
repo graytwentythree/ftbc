@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Jurassic.Library;
 using System;
+using System.IO;
 
 public class Block : Actor {
 
@@ -24,6 +25,8 @@ public class Block : Actor {
 		actor.name = data.name;
 
 		actor.SetupJSObject(data);
+
+		SetTextureFromFile(data, actor);
 
 		return actor;
 	}

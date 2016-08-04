@@ -46,9 +46,33 @@ public class Actor : MonoBehaviour
 
 		actor.id = lastId++;
 
+		SetTextureFromFile(data, actor);
+
 		actor.SetupJSObject(data);
 
 		return actor;
+	}
+
+	protected static void SetTextureFromFile(ActorData data, Actor actor)
+	{
+		var pathArray = data.path.Split('/');
+
+		pathArray[pathArray.Length - 1] = "texture.png";
+
+		var texture = ReadTexture(String.Join("/", pathArray));
+
+		actor.GetComponent<Renderer>().material.SetTexture("_MainTex", texture);
+	}
+
+	protected static Texture ReadTexture(string path)
+	{
+		byte[] imageBytes = File.ReadAllBytes(path);
+
+		Texture2D texture = new Texture2D(2, 2);
+
+		texture.LoadImage(imageBytes);
+
+		return texture;
 	}
 
 	public void SetupJSObject(ActorData data)
@@ -197,6 +221,10 @@ public class Actor : MonoBehaviour
 /// </summary>
 public class ActorData
 {
+	public string name;
+	public int id;
+	public string path;
+
 	public ActorData(string name, int id, string path)
 	{
 		this.name = name;
@@ -204,14 +232,10 @@ public class ActorData
 		this.path = path;
 	}
 
-	public virtual Actor Spawn(Vector3 position)
+	public virtual Actor Spawn(Vector3 position)	
 	{
 		return Actor.Spawn(this, position);
 	}
-
-	public string name;
-	public int id;
-	public string path;
 }
 
 public class BlockData : ActorData

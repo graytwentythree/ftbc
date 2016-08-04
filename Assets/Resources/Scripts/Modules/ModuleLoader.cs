@@ -74,7 +74,8 @@ public class ModuleLoader
 		JSMaster.actorStore.Add(name.ToLower(), blockData);
 	}
 
-	private static ActorData GetActorData(string type, string name, int id, string path)
+	private static ActorData GetActorData(string type, string name,
+	                                      int id, string path)
 	{
 		switch (type)
 		{
