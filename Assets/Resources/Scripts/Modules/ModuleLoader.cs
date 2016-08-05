@@ -61,6 +61,8 @@ public class ModuleLoader
 		// All actor type directories in a module (entities, blocks...)
 		foreach (string dir in Directory.GetDirectories(path))
 		{
+			if (dir.Contains("items")) continue;
+
 			LoadActors(dir);
 		}
 	}

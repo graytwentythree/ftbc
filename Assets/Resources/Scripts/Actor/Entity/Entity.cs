@@ -19,7 +19,6 @@ public class Entity : Actor, IActorWithInventory {
 	#region Member Variables
 
 	Controller controller;
-	IInventoryItem[] inventory = new IInventoryItem[27];
 
 	#endregion
 
@@ -46,7 +45,7 @@ public class Entity : Actor, IActorWithInventory {
 
 	#region Inventory Functions
 
-	public IInventoryItem GetItem(int index)
+	public IStoreable GetItem(int index)
 	{
 		if (index < 0 || index >= inventory.Length)
 			return null;
@@ -54,7 +53,7 @@ public class Entity : Actor, IActorWithInventory {
 		return inventory[index];
 	}
 
-	public void StoreItem(IInventoryItem item)
+	public void StoreItem(IStoreable item)
 	{
 		throw new NotImplementedException();
 	}
