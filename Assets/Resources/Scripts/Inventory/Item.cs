@@ -1,35 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using Jurassic.Library;
 
 
 /// <summary>
 /// This component is attached to items dropped in the world.
 /// </summary>
-public class Item : MonoBehaviour, IStoreable {
+public class Item : IStoreable {
 
-	public int id; 
+	public int id;
+	public string name;
+	public ItemData data;
 
 	public static Item Spawn(ItemData data, Vector3 position)
 	{
 		return null;
 	}
 
+	public Item(ItemData data)
+	{
+		this.name = data.name;
+		this.data = data;
+	}
+
 	//public void AddToInventory(IActorWithInventory actor)
 	//{
 	//	actor.StoreItem(this);
 	//}
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
-
 
 	public override bool Equals(object o)
 	{
@@ -55,10 +53,15 @@ public class Item : MonoBehaviour, IStoreable {
 
 	public ItemData GetInfo()
 	{
-		throw new NotImplementedException();
+		return data;
 	}
 
 	public bool Equals(IStoreable storeable)
+	{
+		throw new NotImplementedException();
+	}
+
+	public ObjectInstance GetJSObject()
 	{
 		throw new NotImplementedException();
 	}

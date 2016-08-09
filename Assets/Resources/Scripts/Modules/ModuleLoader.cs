@@ -20,7 +20,6 @@ public class ModuleLoader
 
 	public static Mesh cubeMesh;
 
-
 	public static void LoadModules(string path)
 	{
 		cubeMesh = Resources.Load<Mesh>(CUBE_MESH_PATH);
@@ -33,27 +32,6 @@ public class ModuleLoader
 			LoadModule(dir);
 		}
 	}
-
-	//private static void ScaleMesh(Mesh mesh, float scale = -.5f)
-	//{
-	//	var vertices = mesh.vertices;
-
-	//	for (var i = 0; i < vertices.Length; i++)
-	//	{
-	//		var vertex = vertices[i];
-
-	//		vertex.x += scale;
-	//		vertex.y += scale;
-	//		vertex.z += scale;
-
-	//		vertices[i] = vertex;
-	//	}
-
-	//	mesh.vertices = vertices;
-
-	//	mesh.RecalculateNormals();
-	//	mesh.RecalculateBounds();
-	//}
 
 	// Loads a module at a given path
 	private static void LoadModule(string path)

@@ -20,6 +20,8 @@ public class Entity : Actor, IActorWithInventory {
 
 	Controller controller;
 
+	Inventory inventory;
+
 	#endregion
 
 	#region Monobehaviour functions
@@ -47,10 +49,12 @@ public class Entity : Actor, IActorWithInventory {
 
 	public IStoreable GetItem(int index)
 	{
-		if (index < 0 || index >= inventory.Length)
-			return null;
+		//if (index < 0 || index >= inventory.Length)
+		//	return null;
 
-		return inventory[index];
+		//return inventory.Get;
+
+		throw new NotImplementedException();
 	}
 
 	public void StoreItem(IStoreable item)

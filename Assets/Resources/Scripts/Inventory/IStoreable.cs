@@ -1,20 +1,18 @@
 ﻿using System;
+using Jurassic.Library;
 
 public interface IStoreable
 {
-	void Drop();
-
 	void Move(int index, int targetIndex);
-
-	//void Store(Inventory inventory);
 
 	ItemData GetInfo();
 
 	bool Equals(IStoreable storeable);
 
+	// Returns the int of how 
 	int GetMaxStack();
 
-	// might happen in the inventory
-	//void DisplayInfo();
+	// Returns the js object version of the IStoreable object
+	ObjectInstance GetJSObject();
 }
 

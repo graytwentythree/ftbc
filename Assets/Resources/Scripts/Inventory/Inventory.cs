@@ -19,10 +19,14 @@ public class Inventory : MonoBehaviour {
 	// Populates inventory with empty items;
 	void Awake()
 	{
-		for (int i = 0; i < 27; i++)
+		for (int i = 0; i < 26; i++)
 		{
 			slots.Add(new InventorySlot(null));
 		}
+
+		slots.Add(new InventorySlot(new Item(new ItemData("swordLol", 1, "items/lolololol"))));
+
+		print(slots[26].GetItem().GetInfo().name);
 	}
 
 	InventorySlot GetNextAvailableStack(IStoreable item)
@@ -55,6 +59,15 @@ public class Inventory : MonoBehaviour {
 
 }
 
+/// <summary>
+/// The InventorySlot class represents a slot in an inventory.
+/// It contains functions to check the state of the slot.
+/// 
+/// An Inventory type encapsulates an InventorySlot class 
+/// as an array of slots. The slot's functions are used
+/// to determine how to interact with a slot when manipulating
+/// an inventory.
+/// </summary>
 public class InventorySlot
 {
 	IStoreable item;
@@ -108,6 +121,11 @@ public class InventorySlot
 		{
 			item = null;
 		}
+	}
+
+	public IStoreable GetItem()
+	{
+		return item;
 	}
 	//public void Drop()
 	//{

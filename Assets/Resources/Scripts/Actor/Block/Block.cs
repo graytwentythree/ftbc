@@ -5,7 +5,7 @@ using Jurassic.Library;
 using System;
 using System.IO;
 
-public class Block : Actor, IStoreable {
+public class Block : Actor {
 
 	protected override void Awake()
 	{
