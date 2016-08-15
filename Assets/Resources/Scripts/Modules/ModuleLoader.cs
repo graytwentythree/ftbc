@@ -39,7 +39,11 @@ public class ModuleLoader
 		// All actor type directories in a module (entities, blocks...)
 		foreach (string dir in Directory.GetDirectories(path))
 		{
-			if (dir.Contains("items")) continue;
+			if (dir.Split('/').Last().ToLower() == "items") 
+			{
+				Debug.Log("loading items");
+				continue;
+			}
 
 			LoadActors(dir);
 		}
