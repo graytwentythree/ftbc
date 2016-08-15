@@ -2,9 +2,9 @@
 
 public interface IActorWithInventory
 {
-	void StoreItem(IInventoryItem item);
+	void StoreItem(IStoreable item);
 
-	IInventoryItem GetItem(int index);
+	IStoreable GetItem(int index);
 
 	void DisplayInventory();
 

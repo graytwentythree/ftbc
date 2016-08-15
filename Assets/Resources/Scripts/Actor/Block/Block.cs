@@ -80,4 +80,22 @@ public class Block : Actor {
 									 new Func<string, ObjectInstance>(jsGetAdjacentBlockObject),
 									 jsObject);
 	}
+
+
+	#region IStoreable Interface Functions
+	public void Drop()
+	{
+		throw new NotImplementedException();
+	}
+
+	public void Move(int index, int targetIndex)
+	{
+		throw new NotImplementedException();
+	}
+
+	public ItemData GetInfo()
+	{
+		throw new NotImplementedException();
+	}
+	#endregion
 }
