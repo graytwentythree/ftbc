@@ -4,8 +4,8 @@ using System.Collections;
 [RequireComponent(typeof(Rigidbody))]
 public class Controller : MonoBehaviour {
 
-	Actor actor;
-	Rigidbody rig;
+	protected Actor actor;
+	protected Rigidbody rig;
 
 	// Use this for initialization
 	void Awake () {
@@ -21,6 +21,19 @@ public class Controller : MonoBehaviour {
 	protected virtual void Move()
 	{
 		rig.velocity = GetMoveInput();
+	}
+
+	protected virtual void Interact(Interaction interactMode)
+	{
+		switch (interactMode)
+		{
+			case Interaction.ActivateBlock:
+				break;
+			case Interaction.DestroyBlock:
+				break;
+			case Interaction.PlaceBlock:
+				break;
+		}
 	}
 
 	// Update is called once per frame
